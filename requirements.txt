@@ -1,0 +1,13 @@
+# TensorFlow 2.18 provides the Windows CPU build; PyTorch is used for training.
+numpy==1.26.4
+opencv-python==4.10.0.84
+PyYAML==6.0.2
+tensorflow==2.18.0
+protobuf==5.29.5
+torch==2.5.1
+torchvision==0.20.1
+timm==1.0.15
+tqdm==4.67.1
+streamlit==1.65.0
+plotly==7.1.0
+reportlab==5.0.1
