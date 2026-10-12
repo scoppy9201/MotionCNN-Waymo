@@ -217,6 +217,23 @@ def main():
                     f'e{epochs_processed}_b{processed_batches}.pth')
                 torch.save(torch_checkpoint_data, torch_checkpoint_path)
 
+        # Save a resumable checkpoint after every completed epoch. This keeps
+        # progress available if a long training run is stopped early.
+        completed_epochs = epochs_processed + 1
+        if isinstance(model, nn.DataParallel):
+            model_state_dict = model.module.state_dict()
+        else:
+            model_state_dict = model.state_dict()
+        torch_checkpoint_data = {
+            "model_state_dict": model_state_dict,
+            "optimizer_state_dict": optimizer.state_dict(),
+            "epochs_processed": completed_epochs,
+            "processed_batches": processed_batches}
+        torch_checkpoint_path = os.path.join(
+            experiment_checkpoints_dir,
+            f'e{completed_epochs}_b{processed_batches}.pth')
+        torch.save(torch_checkpoint_data, torch_checkpoint_path)
+
     # Always save the final state. Small datasets may finish training before
     # reaching eval_every, which otherwise leaves no checkpoint on disk.
     if isinstance(model, nn.DataParallel):
